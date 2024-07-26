@@ -51,10 +51,15 @@ class ChatInput extends React.Component {
     handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            this.setState({ fileName: file.name });
-            this.imageHandler.handleImageUpload(e.target, (resizedImageUrl) => {
-                this.setState({ image: resizedImageUrl, imagePreviewUrl: resizedImageUrl });
-            });
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                this.setState({
+                    image: reader.result,
+                    imagePreviewUrl: reader.result,
+                    fileName: file.name
+                });
+            };
+            reader.readAsDataURL(file);
         }
     };
 
