@@ -43,6 +43,9 @@ class Chat extends React.Component {
           <div className="marquee">
             <p className="marquee-text">Note: This is a Demo. Messages will be cleared when the page reloads.</p>
           </div>
+          <div className="marquee">
+            <p className="marquee-text">UPLOAD A IMAGE</p>
+          </div>
         </div>
         <div className="chat-messages">
           <MessageList messages={this.state.messages} />
