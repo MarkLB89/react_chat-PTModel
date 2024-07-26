@@ -1,1 +1,1 @@
-# rect_chat-PTM
+# rect_chat using pretrained model
