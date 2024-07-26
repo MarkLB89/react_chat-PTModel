@@ -1,55 +1,48 @@
 // src/components/Chat.js
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import '../css/Chat.css'; // Ensure this path is correct
+import React from 'react';
+import Message from './Message';
+import MessageList from './MessageList';
+import ChatInput from './ChatInput';
+import ChatService from '../services/ChatService';
+import '../css/Chat.css';
 
-const Chat = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { messages: [] };
+    this.chatService = new ChatService();
+  }
 
-  const handleSend = async () => {
-    if (input.trim() === '') return;
+  handleSendMessage = async (text) => {
+    const userMessage = new Message(text, 'user');
+    this.setState((prevState) => ({
+      messages: [...prevState.messages, userMessage]
+    }));
 
-    const newMessage = { text: input, sender: 'user' };
-    setMessages([...messages, newMessage]);
-    setInput('');
-
-    // Send message to pretrained model API
     try {
-      const response = await axios.post('YOUR_PRETRAINED_MODEL_API_ENDPOINT', {
-        message: input,
-      });
-      const botMessage = { text: response.data.response, sender: 'bot' };
-      setMessages([...messages, newMessage, botMessage]);
+      const botResponseText = await this.chatService.sendMessage(text);
+      const botMessage = new Message(botResponseText, 'bot');
+      this.setState((prevState) => ({
+        messages: [...prevState.messages, botMessage]
+      }));
     } catch (error) {
-      console.error('Error communicating with the pretrained model API:', error);
+      const errorMessage = new Message("Sorry, something went wrong.", 'bot');
+      this.setState((prevState) => ({
+        messages: [...prevState.messages, errorMessage]
+      }));
     }
   };
 
-  return (
-    <div className="card">
-      <div className="chat-header">
-        Chat Application
+  render() {
+    return (
+      <div className="card">
+        <div className="chat-header">Chat Application</div>
+        <MessageList messages={this.state.messages} />
+        <ChatInput onSendMessage={this.handleSendMessage} />
       </div>
-      <div className="chat-messages">
-        {messages.map((msg, index) => (
-          <div key={index} className={`chat-message ${msg.sender}`}>
-            {msg.text}
-          </div>
-        ))}
-      </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
-        />
-        <button onClick={handleSend}>Send</button>
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default Chat;
