@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
-import Login from './components/Login';
+// src/App.js
 
-const App = () => {
-  const [user, setUser] = useState(null);
-  const handleLogin = (username) => {
-    setUser(username);
-  };
+import React from 'react';
+import './App.css';
+import Chat from './components/Chat';
+
+function App() {
   return (
-    <div>
-      {user ? (
-        <div>
-          <h2>Welcome, {user}!</h2>
-          <button onClick={() => setUser(null)}>Logout</button>
-        </div>
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
+    <div className="App">
+      <header className="App-header">
+        <h1>Chat Application</h1>
+      </header>
+      <Chat />
     </div>
   );
-};
+}
+
 export default App;
