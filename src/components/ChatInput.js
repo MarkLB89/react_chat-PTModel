@@ -71,7 +71,7 @@ class ChatInput extends React.Component {
                 let predictionTexts = [];
                 if (this.localModelMobileNet) {
                     const predictionsMobileNet = await this.localModelMobileNet.classify(imageElement);
-                    const predictionTextMobileNet = predictionsMobileNet.map(p => `MobileNet - ${p.className}: ${(p.probability * 100).toFixed(2)}%`).join('\n');
+                    const predictionTextMobileNet = predictionsMobileNet.map(p => `MNM - ${p.className}: ${(p.probability * 100).toFixed(2)}%`).join('\n');
                     predictionTexts.push(predictionTextMobileNet);
                 } else {
                     console.error('Local MobileNet model not loaded');
@@ -79,7 +79,7 @@ class ChatInput extends React.Component {
 
                 if (this.localModelCocoSsd) {
                     const predictionsCocoSsd = await this.localModelCocoSsd.detect(imageElement);
-                    const predictionTextCocoSsd = predictionsCocoSsd.map(p => `COCO-SSD - ${p.class}: ${(p.score * 100).toFixed(2)}%`).join('\n');
+                    const predictionTextCocoSsd = predictionsCocoSsd.map(p => `COCOSSD - ${p.class}: ${(p.score * 100).toFixed(2)}%`).join('\n');
                     predictionTexts.push(predictionTextCocoSsd);
                 } else {
                     console.error('Local COCO-SSD model not loaded');
