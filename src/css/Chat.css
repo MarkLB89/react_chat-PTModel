@@ -148,20 +148,24 @@ body {
 }
 
 .image-thumbnail {
-    max-width: 40px;
-    max-height: 40px;
+    max-width: 50px;
+    max-height: 50px;
     margin-right: 10px;
     border-radius: 5px;
 }
 
 .remove-image-button {
-    background: none;
+    border-radius: 15px;
     border: none;
     font-size: 0.8em;
     cursor: pointer;
     color: rgba(15, 0, 0, 0.444);
+    background-color: #d09f9f6d;
 }
-
+.remove-image-button:hover {
+    color: rgba(250, 247, 247, 0.444);
+    background-color: #1501016d;
+}
 .file-name {
     padding: 10px;
     font-size: 0.9em;
