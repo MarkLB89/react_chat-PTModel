@@ -1,5 +1,3 @@
-/* src/css/Chat.css */
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -31,6 +29,30 @@ body {
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
+    position: relative;
+}
+
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.marquee p {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 15s linear infinite;
+    font-size: 0.8em;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
 }
 
 .chat-messages {
@@ -54,14 +76,14 @@ body {
 }
 
 .chat-message.user {
-    background-color: #b2b6ba;
-    color: rgb(0, 0, 0);
+    background-color: #ebeef1;
+    color: rgb(3, 0, 0);
     align-self: flex-end;
     margin-left: auto;
 }
 
 .chat-message.bot {
-    background-color: #e4e6eb;
+    background-color: #c0c1c5;
     color: black;
     align-self: flex-start;
     margin-right: auto;
@@ -98,14 +120,53 @@ body {
     align-self: flex-start;
 }
 
-.chat-input {
+.message-image {
+    max-width: 100%;
+    margin-bottom: 5px;
+}
+
+.chat-input-container {
     display: flex;
-    padding: 10px;
+    flex-direction: column;
     border-top: 1px solid #ddd;
     background-color: white;
 }
 
-.chat-input input {
+.image-preview {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+
+.image-thumbnail {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.remove-image-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: red;
+}
+
+.file-name {
+    padding: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+.chat-input input[type="text"] {
     flex: 1;
     padding: 10px;
     border: 1px solid #ddd;
@@ -114,10 +175,18 @@ body {
     font-size: 16px;
 }
 
+.file-input-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 .chat-input button {
     padding: 10px 20px;
     border: none;
-    background-color: #007bff;
+    background-color: #afc5e5;
     color: white;
     border-radius: 5px;
     font-size: 16px;

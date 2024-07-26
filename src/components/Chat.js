@@ -14,8 +14,8 @@ class Chat extends React.Component {
     this.chatService = new ChatService();
   }
 
-  handleSendMessage = async (text) => {
-    const userMessage = new Message(text, 'user');
+  handleSendMessage = async (text, image) => {
+    const userMessage = new Message(text, 'user', image);
     this.setState((prevState) => ({
       messages: [...prevState.messages, userMessage]
     }));
@@ -37,7 +37,12 @@ class Chat extends React.Component {
   render() {
     return (
       <div className="card">
-        <div className="chat-header">Chat Application</div>
+        <div className="chat-header">
+          Chat Application Demo
+          <div className="marquee">
+            <p className="marquee-text">Note: This is a Demo. Messages will be cleared when the page reloads.</p>
+          </div>
+        </div>
         <MessageList messages={this.state.messages} />
         <ChatInput onSendMessage={this.handleSendMessage} />
       </div>

@@ -12,6 +12,7 @@ class MessageList extends React.Component {
                             {msg.sender === 'user' ? '👨🏾' : '🤖'}
                         </div>
                         <div className="message-content">
+                            {msg.image && <img src={msg.image} alt="uploaded" className="message-image" />}
                             <div className="message-text">{msg.text}</div>
                             <div className="message-time">{msg.getFormattedTime()}</div>
                         </div>
