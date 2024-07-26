@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../css/Chat.css'; // Updated import path
+import '../css/Chat.css'; // Ensure this path is correct
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -28,7 +28,10 @@ const Chat = () => {
   };
 
   return (
-    <div className="chat-container">
+    <div className="card">
+      <div className="chat-header">
+        Chat Application
+      </div>
       <div className="chat-messages">
         {messages.map((msg, index) => (
           <div key={index} className={`chat-message ${msg.sender}`}>
