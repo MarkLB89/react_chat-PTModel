@@ -1,1 +1,1 @@
-# rect_chat using pretrained model
+# react_chat using pretrained model
