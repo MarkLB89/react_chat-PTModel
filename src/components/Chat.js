@@ -4,34 +4,35 @@ import React from 'react';
 import Message from './Message';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
-import ChatService from '../services/ChatService';
+import Loader from './Loader';
 import '../css/Chat.css';
 
 class Chat extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { messages: [] };
-    this.chatService = new ChatService();
+    this.state = {
+      messages: [],
+      isLoading: true,
+    };
   }
 
-  handleSendMessage = async (text, image) => {
+  setLoading = (isLoading) => {
+    this.setState({ isLoading });
+  };
+
+  handleSendMessage = (text, image) => {
     const userMessage = new Message(text, 'user', image);
     this.setState((prevState) => ({
-      messages: [...prevState.messages, userMessage]
+      messages: [...prevState.messages, userMessage],
+      isLoading: false,
     }));
+  };
 
-    try {
-      const botResponseText = await this.chatService.sendMessage(text);
-      const botMessage = new Message(botResponseText, 'bot');
-      this.setState((prevState) => ({
-        messages: [...prevState.messages, botMessage]
-      }));
-    } catch (error) {
-      const errorMessage = new Message("Sorry, something went wrong.", 'bot');
-      this.setState((prevState) => ({
-        messages: [...prevState.messages, errorMessage]
-      }));
-    }
+  handleModelPrediction = (predictionText) => {
+    const predictionMessage = new Message(predictionText, 'bot');
+    this.setState((prevState) => ({
+      messages: [...prevState.messages, predictionMessage],
+    }));
   };
 
   render() {
@@ -43,8 +44,11 @@ class Chat extends React.Component {
             <p className="marquee-text">Note: This is a Demo. Messages will be cleared when the page reloads.</p>
           </div>
         </div>
-        <MessageList messages={this.state.messages} />
-        <ChatInput onSendMessage={this.handleSendMessage} />
+        <div className="chat-messages">
+          <MessageList messages={this.state.messages} />
+          {this.state.isLoading && <Loader />}
+        </div>
+        <ChatInput onSendMessage={this.handleSendMessage} setLoading={this.setLoading} onModelPrediction={this.handleModelPrediction} />
       </div>
     );
   }
