@@ -1,9 +1,8 @@
-// src/components/ChatInput.js
-
 import React from 'react';
 import ImageHandler from '../services/ImageHandler';
 import PopupLoader from './PopupLoader';
 import * as mobilenet from '@tensorflow-models/mobilenet';
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
 
 class ChatInput extends React.Component {
@@ -16,28 +15,30 @@ class ChatInput extends React.Component {
             fileName: '',
         };
         this.imageHandler = new ImageHandler();
-        this.localModel = null;
+        this.localModelMobileNet = null;
+        this.localModelCocoSsd = null;
     }
 
     async componentDidMount() {
-        await this.loadModel();
+        await this.loadModels();
         this.props.setLoading(false);
     }
 
-    async loadModel() {
+    async loadModels() {
         this.props.setLoading(true);
         const loader = PopupLoader.showLoader(document.querySelector('.chat-messages'));
-        console.log('Loading model...');
+        console.log('Loading models...');
         try {
-            this.localModel = await mobilenet.load({
+            this.localModelMobileNet = await mobilenet.load({
                 version: 2, // Specify MobileNet version here
                 alpha: 1.0, // Specify alpha (width multiplier) here, 1.0 means no reduction
             });
-            console.log('Model loaded');
+            this.localModelCocoSsd = await cocoSsd.load();
+            console.log('Models loaded');
             PopupLoader.hideLoader(loader);
             this.props.setLoading(false);
         } catch (error) {
-            console.error('Error loading the model:', error);
+            console.error('Error loading the models:', error);
             PopupLoader.hideLoader(loader);
             this.props.setLoading(false);
         }
@@ -67,14 +68,26 @@ class ChatInput extends React.Component {
             const imageElement = new Image();
             imageElement.src = this.state.image;
             imageElement.onload = async () => {
-                if (this.localModel) {
-                    const predictions = await this.localModel.classify(imageElement);
-                    const predictionText = predictions.map(p => `${p.className}: ${(p.probability * 100).toFixed(2)}%`).join('\n');
-                    this.props.onModelPrediction(predictionText);
-                    this.setState({ input: '', image: null, imagePreviewUrl: null, fileName: '' });
+                let predictionTexts = [];
+                if (this.localModelMobileNet) {
+                    const predictionsMobileNet = await this.localModelMobileNet.classify(imageElement);
+                    const predictionTextMobileNet = predictionsMobileNet.map(p => `MobileNet - ${p.className}: ${(p.probability * 100).toFixed(2)}%`).join('\n');
+                    predictionTexts.push(predictionTextMobileNet);
                 } else {
-                    console.error('Local model not loaded');
+                    console.error('Local MobileNet model not loaded');
                 }
+
+                if (this.localModelCocoSsd) {
+                    const predictionsCocoSsd = await this.localModelCocoSsd.detect(imageElement);
+                    const predictionTextCocoSsd = predictionsCocoSsd.map(p => `COCO-SSD - ${p.class}: ${(p.score * 100).toFixed(2)}%`).join('\n');
+                    predictionTexts.push(predictionTextCocoSsd);
+                } else {
+                    console.error('Local COCO-SSD model not loaded');
+                }
+
+                const combinedPredictionText = predictionTexts.join('\n\n');
+                this.props.onModelPrediction(combinedPredictionText);
+                this.setState({ input: '', image: null, imagePreviewUrl: null, fileName: '' });
             };
         } else {
             const predictionText = `You said: ${userMessage}`;
