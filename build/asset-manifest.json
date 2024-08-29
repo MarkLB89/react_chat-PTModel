@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react_chat-PTModel/static/css/main.3c01ccef.css",
+    "main.js": "/react_chat-PTModel/static/js/main.0b31dea0.js",
+    "index.html": "/react_chat-PTModel/index.html",
+    "main.3c01ccef.css.map": "/react_chat-PTModel/static/css/main.3c01ccef.css.map",
+    "main.0b31dea0.js.map": "/react_chat-PTModel/static/js/main.0b31dea0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3c01ccef.css",
+    "static/js/main.0b31dea0.js"
+  ]
+}

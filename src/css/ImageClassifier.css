@@ -1,0 +1,33 @@
+/* src/css/ImageClassifier.css */
+
+.image-classifier-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.file-input-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview img {
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+.predictions {
+    margin-top: 20px;
+    font-size: 1em;
+}
