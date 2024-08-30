@@ -1,3 +1,4 @@
+# routes.py
 from flask import Blueprint, request, jsonify
 from models import text_files, generate_answer
 from image_processing import detect_and_count_objects, generate_user_friendly_response, extract_text_from_image
